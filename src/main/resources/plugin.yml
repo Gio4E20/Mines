@@ -1,0 +1,7 @@
+name: Mines
+version: ${project.version}
+main: me.gioplugins.mines.Mines
+api-version: 1.13
+authors: [Gio]
+description: Custom minigame made for a customer
+website: https://gio4e20.github.io
