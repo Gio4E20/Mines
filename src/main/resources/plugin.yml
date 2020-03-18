@@ -5,3 +5,7 @@ api-version: 1.13
 authors: [Gio]
 description: Custom minigame made for a customer
 website: https://gio4e20.github.io
+commands:
+  mines:
+    usage: /command <args>
+    description: main command.
