@@ -1,5 +1,6 @@
 package me.gioplugins.mines;
 import me.gioplugins.mines.commands.MinesCommand;
+import me.gioplugins.mines.events.BlockBreak;
 import me.gioplugins.mines.events.PlayerSwitchedWorlds;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -18,6 +19,8 @@ import java.util.List;
 
 public final class Mines extends JavaPlugin implements Listener {
 
+
+    public static HashMap<String,Boolean> isFinished = new HashMap<String,Boolean>();
     public static HashMap<String,Boolean> isMineInUse = new HashMap<String,Boolean>();
     public static HashMap<String,Integer> isLobbyFull = new HashMap<String,Integer>();
     public static List<World> minesList = new ArrayList<>();
@@ -28,6 +31,7 @@ public final class Mines extends JavaPlugin implements Listener {
     public void onEnable()
     {
         //Events
+        Bukkit.getServer().getPluginManager().registerEvents(new BlockBreak(), this);
         Bukkit.getServer().getPluginManager().registerEvents(new PlayerSwitchedWorlds(), this);
         //
         //Worlds
@@ -89,6 +93,7 @@ public final class Mines extends JavaPlugin implements Listener {
         {
             minesList.add(world);
             isMineInUse.put(world.getName(), false);
+            isFinished.put(world.getName(), false);
         }
     }
 
@@ -96,6 +101,7 @@ public final class Mines extends JavaPlugin implements Listener {
     {
         return world!=null && Bukkit.getServer().unloadWorld(world, false);
     }
+
 
     public ArrayList<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args)
     {

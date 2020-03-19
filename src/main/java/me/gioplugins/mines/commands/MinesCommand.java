@@ -42,7 +42,6 @@ public class MinesCommand implements CommandExecutor {
                     World spawn = Bukkit.getWorld("world");
                     player.teleport(spawn.getSpawnLocation());
                 }
-
             }
         }
 
