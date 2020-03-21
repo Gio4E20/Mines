@@ -2,12 +2,16 @@ package me.gioplugins.mines;
 import me.gioplugins.mines.commands.MinesCommand;
 import me.gioplugins.mines.events.BlockBreak;
 import me.gioplugins.mines.events.PlayerSwitchedWorlds;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
@@ -19,11 +23,11 @@ import java.util.List;
 
 public final class Mines extends JavaPlugin implements Listener {
 
-
+    public static FileConfiguration config;
+    private static Economy econ = null;
     public static HashMap<String,Boolean> isFinished = new HashMap<String,Boolean>();
     public static HashMap<String,Boolean> isMineInUse = new HashMap<String,Boolean>();
     public static HashMap<String,Integer> isLobbyFull = new HashMap<String,Integer>();
-    public static List<World> minesList = new ArrayList<>();
     public static List<World> lobbiesList = new ArrayList<>();
     public static World schem;
 
@@ -36,16 +40,30 @@ public final class Mines extends JavaPlugin implements Listener {
         //
         //Worlds
         schem = WorldCreator.name("minesSchem").createWorld();
-        for(int i = 0 ; i < 1; i++)
+        for(int i = 0 ; i < getConfig().getInt("numberOfMines"); i++)
+        {
+            copyWorld(schem, "mines-" + i);
+        }
+        for(int i = 0 ; i < getConfig().getInt("numberOfLobbies"); i++)
         {
             copyWorld(schem, "lobbyMines-" + i);
-            copyWorld(schem, "mines-" + i);
         }
 
         //
         //Commands
         getCommand("mines").setExecutor(new MinesCommand());
         getCommand("mines").setTabCompleter(this::onTabComplete);
+        //
+        //Setup economy
+        if (!setupEconomy() ) {
+            System.out.println(ChatColor.RED + "No economy plugin found. Disabling this plugin 'Mines'");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        //Setup config
+        getConfig().options().copyDefaults();
+        saveDefaultConfig();
+        config = this.getConfig();
         //
     }
 
@@ -91,7 +109,6 @@ public final class Mines extends JavaPlugin implements Listener {
         }
         else if(newWorldName.startsWith("mines-"))
         {
-            minesList.add(world);
             isMineInUse.put(world.getName(), false);
             isFinished.put(world.getName(), false);
         }
@@ -100,6 +117,25 @@ public final class Mines extends JavaPlugin implements Listener {
     public static boolean unloadWorld(World world)
     {
         return world!=null && Bukkit.getServer().unloadWorld(world, false);
+    }
+
+
+    private boolean setupEconomy() {
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
+    }
+
+
+
+    public static Economy getEconomy() {
+        return econ;
     }
 
 

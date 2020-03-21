@@ -14,26 +14,28 @@ public class PlayerSwitchedWorlds implements Listener {
 
     @EventHandler
     public void event(PlayerChangedWorldEvent e) {
+
         Player player = e.getPlayer();
         World world = player.getWorld();
         if (player.getWorld().getName().startsWith("lobbyMines-")) {
             int playerQuantity = Mines.isLobbyFull.get(world.getName()) + 1;
-            if (playerQuantity != 6) //Change To Config Later
+
+            if (playerQuantity <= Mines.config.getInt("maxNumberOfPlayers"))
             {
                 Mines.isLobbyFull.remove(player.getWorld().getName());
                 Mines.isLobbyFull.put(player.getWorld().getName(), playerQuantity);
                 for (Player target : player.getWorld().getPlayers()) {
-                    target.sendMessage(ChatColor.GOLD + player.getName() + " Joined the game " + ChatColor.GRAY + "(0" + (playerQuantity) + "/06)"); //Change To Config Later
+                    target.sendMessage(ChatColor.GOLD + player.getName() + " Joined the game " + ChatColor.GRAY + "(0" + (playerQuantity) + "/0" + Mines.config.getInt("maxNumberOfPlayers") + ")");
                 }
-                if (playerQuantity == 2)//Change To Config Later
+                if (playerQuantity == Mines.config.getInt("minNumberOfPlayers"))
                 {
                     GameManager.Lobby(world);
                 }
-                else if(playerQuantity > 2)
+                else if(playerQuantity > Mines.config.getInt("minNumberOfPlayers"))
                 {
                     for (Player target : player.getWorld().getPlayers())
                     {
-                        target.sendMessage(ChatColor.GOLD + player.getName() + " Joined the game " + ChatColor.GRAY + "(0" + (playerQuantity) + "/06)"); //Change To Config Later
+                        target.sendMessage(ChatColor.GOLD + player.getName() + " Joined the game " + ChatColor.GRAY + "/0" + Mines.config.getInt("maxNumberOfPlayers") + ")");
                     }
                 }
             }

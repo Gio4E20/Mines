@@ -1,0 +1,52 @@
+#Config.yml - 'Mines'
+
+#Worlds
+numberOfLobbies: 1
+numberOfMines: 1
+numberOfSpawns: 6
+spawnsX: [-259, -259, -259, -259, -259, -259] # SpawnsX: [AX,BX,CX] , SpawnsY: [AY,BY,CY], SpawnsZ: [AZ,BZ,CZ]
+spawnsY: [7, 7, 7, 7, 7, 7] # SpawnsX: [AX,BX,CX] , SpawnsY: [AY,BY,CY], SpawnsZ: [AZ,BZ,CZ]
+spawnsZ: [32, 26, 20, 14, 8, 2] # SpawnsX: [AX,BX,CX] , SpawnsY: [AY,BY,CY], SpawnsZ: [AZ,BZ,CZ]
+yaw: 92
+pitch: 4
+#
+
+#Players
+maxNumberOfPlayers: 6
+minNumberOfPlayers: 2
+moneyOnWin: 6
+moneyOnLoss: 3
+diamondsToWin: 6
+nightVision: true
+#
+
+#lobby
+lobbySpawnX: [-240, -246] #Max, min
+lobbySpawnY: 7
+lobbySpawnZ: [16, 9] #Max, min
+countdownTimer: 5 #seconds
+#
+
+#Ore generating
+x: [-331, -271] #min, max
+y: [1, 11] #min, max
+z: [0, 35] #min, max
+
+#A random number is generated from 1-100.
+#To change those values you have to put in brackets: [bigger than, smaller than]
+#Eg: diamond_ore: [0, 2], the number that is bigger than 0, and smaller than 2 is = 1,
+#if the random number is = 1 a diamond ore will spawn.
+
+diamond_ore: [0, 2]
+gold_ore: [1, 12]
+nether_quartz_ore: [12, 23]
+coal_ore: [23, 34]
+lapis_ore: [34, 45]
+stone: [45, 56]
+dirt: [56, 67]
+redstone_ore: [67, 78]
+emerald_ore: [78, 89]
+iron_ore: [89, 100]
+#
+
+
