@@ -30,6 +30,7 @@ public class PlayerSwitchedWorlds implements Listener {
                 if (playerQuantity == Mines.config.getInt("minNumberOfPlayers"))
                 {
                     GameManager.Lobby(world);
+                    GameManager.isCanceled.put(world.getName(), false);
                 }
                 else if(playerQuantity > Mines.config.getInt("minNumberOfPlayers"))
                 {
@@ -48,7 +49,13 @@ public class PlayerSwitchedWorlds implements Listener {
             Mines.isLobbyFull.put(e.getFrom().getName(), playerQuantity);
             for(Player target : e.getFrom().getPlayers())
             {
-                target.sendMessage(ChatColor.GOLD + player.getName() + " Left the game " + ChatColor.GRAY + "(0" + playerQuantity + "/06)"); //Change To Config Later
+                target.sendMessage(ChatColor.GOLD + player.getName() + " Left the game " + ChatColor.GRAY + "(0" + playerQuantity + "/0" + Mines.config.getInt("maxNumberOfPlayers") + ")");
+            }
+            if(playerQuantity < Mines.config.getInt("minNumberOfPlayers"))
+            {
+                GameManager.Lobby(e.getFrom());
+                GameManager.isCanceled.remove(e.getFrom().getName());
+                GameManager.isCanceled.put(e.getFrom().getName(), true);
             }
         }
     }

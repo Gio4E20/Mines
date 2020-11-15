@@ -1,0 +1,6 @@
+me\gioplugins\mines\misc\GameManager$1.class
+me\gioplugins\mines\events\BlockBreak.class
+me\gioplugins\mines\events\PlayerSwitchedWorlds.class
+me\gioplugins\mines\Mines.class
+me\gioplugins\mines\commands\MinesCommand.class
+me\gioplugins\mines\misc\GameManager.class

@@ -22,6 +22,7 @@ import java.util.Random;
 public class GameManager {
 
     //public static HashMap<String, String> playerMine = new HashMap<String,String>();
+    public static HashMap<String,Boolean> isCanceled = new HashMap<String,Boolean>();
     public static HashMap<String, Integer> diamondQuantity = new HashMap<String,Integer>();
     private static Plugin plugin = Mines.getPlugin(Mines.class);
 
@@ -80,31 +81,39 @@ public class GameManager {
     }
 
     public static void Lobby(World world) {
+
         new BukkitRunnable() {
             int lobbyCounter = Mines.config.getInt("countdownTimer") + 1;
 
             @Override
             public void run() {
-                lobbyCounter--;
-                for (Player target : world.getPlayers()) {
-                    if (lobbyCounter >= 0) {
-                        if (lobbyCounter == Mines.config.getInt("countdownTimer")) {
+                if(isCanceled.get(world.getName()))
+                {
+                    this.cancel();
+                    lobbyCounter = Mines.config.getInt("countdownTimer") + 1;
+                }
+                else {
+                    lobbyCounter--;
+                    for (Player target : world.getPlayers()) {
 
-                            target.sendMessage(ChatColor.GOLD + "Game starting in " + lobbyCounter + " seconds.");
-                            target.playSound(target.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 10f, 1f);
+                        if (lobbyCounter >= 0) {
+                            if (lobbyCounter == Mines.config.getInt("countdownTimer")) {
 
-                        } else if (lobbyCounter <= Mines.config.getInt("countdownTimer") / 2 && lobbyCounter != 0) {
+                                target.sendMessage(ChatColor.GOLD + "Game starting in " + lobbyCounter + " seconds.");
+                                target.playSound(target.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 10f, 1f);
 
-                            target.sendMessage(ChatColor.GOLD + "Game starting in " + lobbyCounter + " seconds.");
-                            target.playSound(target.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 10f, 1f);
+                            } else if (lobbyCounter <= Mines.config.getInt("countdownTimer") / 2 && lobbyCounter != 0) {
 
-                        } else if (lobbyCounter == 0) {
+                                target.sendMessage(ChatColor.GOLD + "Game starting in " + lobbyCounter + " seconds.");
+                                target.playSound(target.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 10f, 1f);
 
-                            this.cancel();
-                            target.sendMessage(ChatColor.GOLD + "The game has started.");
-                            target.playSound(target.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 10f, 0.2f);
-                            start(world);
+                            } else if (lobbyCounter == 0) {
 
+                                this.cancel();
+                                target.sendMessage(ChatColor.GOLD + "The game has started.");
+                                target.playSound(target.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 10f, 0.2f);
+                                start(world);
+                            }
                         }
                     }
                 }
@@ -188,6 +197,7 @@ public class GameManager {
             target.sendMessage(ChatColor.YELLOW + "Match Complete!");
             target.sendMessage(ChatColor.YELLOW + winner.getDisplayName() + ChatColor.GOLD + " Got the diamonds");
             target.getInventory().clear();
+            target.setLevel(0);
             target.setExp(0f);
 
             target.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());

@@ -1,0 +1,11 @@
+name: Mines
+version: 1.0-SNAPSHOT
+main: me.gioplugins.mines.Mines
+api-version: 1.13
+authors: [Gio]
+description: Custom minigame made for a customer
+website: https://gio4e20.github.io
+commands:
+  mines:
+    usage: /command <args>
+    description: main command.

@@ -33,9 +33,9 @@ public class BlockBreak implements Listener {
                     int playerDiamonds = GameManager.diamondQuantity.get(player.getUniqueId().toString());
 
                     if (playerDiamonds + 1 < 6) {
-                        GameManager.scoreboardManager(player.getWorld());
                         GameManager.diamondQuantity.remove(player.getUniqueId().toString());
                         GameManager.diamondQuantity.put(player.getUniqueId().toString(), playerDiamonds + 1);
+                        GameManager.scoreboardManager(player.getWorld());
                         player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 10f, 1f);
                         for(Player target : player.getWorld().getPlayers())
                         {
@@ -45,10 +45,13 @@ public class BlockBreak implements Listener {
                     }
                     else if(playerDiamonds + 1 == Mines.config.getInt("diamondsToWin"))
                     {
+                        for(Player target : player.getWorld().getPlayers())
+                        {
+                            target.sendMessage(ChatColor.YELLOW + player.getDisplayName() + ChatColor.GOLD + " Got one Diamond " + ChatColor.GRAY + "(0" + (playerDiamonds + 1) + "/0" + Mines.config.getInt("diamondsToWin") + ")");
+                        }
                         GameManager.scoreboardManager(player.getWorld());
                         GameManager.stopGame(player.getWorld(), player);
                     }
-
                 }
             }
         }
