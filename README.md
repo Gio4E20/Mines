@@ -90,7 +90,7 @@ You will need these installed in your server before proceeding.
 
 ### Installation
 
-1. Download the plugin at [https://example.com](https://example.com)
+1. Download the plugin at [https://github.com/giovalgas/Mines/releases](https://github.com/giovalgas/Mines/releases)
 2. Put the downloaded jar into the plugins folder (yourServerFolder/plugins)
 
 ### Configuration
